@@ -1,0 +1,169 @@
+/* Загальні стилі: */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Josefin Sans', sans-serif;
+    background-color: hsl(235, 21%, 11%);
+    color: hsl(234, 39%, 85%);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url('./images/bg-desktop-dark.jpg');
+    background-size: cover;
+}
+
+body.light-theme {
+    background-color: hsl(0, 0%, 98%);
+    color: hsl(235, 19%, 35%);
+    background-image: url('./images/bg-desktop-light.jpg');
+  background-size: cover;
+}
+
+
+
+.attribution {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+    background: none;
+    padding: 10px;
+    position: relative;
+}
+
+h1 {
+    letter-spacing: 10px;
+    color: white;
+    font-size: 2rem;
+}
+
+.todo-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    flex-grow: 1;
+}
+
+/* Стилі для перемикача теми та заголовку: */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#theme-toggle img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Стилі для поля введення нового завдання: */
+.input-container {
+    background-color: hsl(237, 14%, 26%);
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+#new-todo {
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    outline: none;
+}
+
+/* Стилі для списку завдань: */
+.todo-list {
+    list-style-type: none;
+    background-color: hsl(237, 14%, 26%);
+    border-radius: 5px;
+    padding: 0;
+}
+
+.todo-item {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid hsl(233, 14%, 35%);
+}
+
+.todo-item:last-child {
+    border-bottom: none;
+}
+
+.todo-item.completed {
+    text-decoration: line-through;
+    color: hsl(233, 11%, 84%);
+}
+
+.todo-item button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Стилі для панелі фільтрації та очищення завершених завдань: */
+.footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: hsl(237, 14%, 26%);
+    padding: 15px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    color: hsl(220, 98%, 61%);
+}
+
+#clear-completed {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* Адаптивність (Медіа-запити): */
+@media (max-width: 600px) {
+    .todo-container {
+        padding: 20px;
+    }
+
+    #new-todo {
+        font-size: 1rem;
+    }
+
+    .footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

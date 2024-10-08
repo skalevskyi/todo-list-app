@@ -22,14 +22,13 @@ body.light-theme {
     background-color: hsl(0, 0%, 98%);
     color: hsl(235, 19%, 35%);
     background-image: url('./images/bg-desktop-light.jpg');
-  background-size: cover;
+    background-size: cover;
 }
-
-
 
 .attribution {
     text-align: center;
     margin-top: 20px;
+    margin-bottom: 20px;
     width: 100%;
     background: none;
     padding: 10px;
@@ -49,6 +48,7 @@ h1 {
     padding: 40px;
     flex-grow: 1;
 }
+
 
 /* Стилі для перемикача теми та заголовку: */
 header {
@@ -75,15 +75,39 @@ header {
     border-radius: 5px;
     padding: 10px 20px;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 #new-todo {
-    width: 100%;
-    background: none;
+    flex: 1;
+    padding: 10px;
+    font-size: 1rem;
     border: none;
+    margin-right: 10px;
+    background-color: transparent;
     color: white;
-    font-size: 1.2rem;
+}
+
+/* Стилі кнопки "додати" */
+#add-todo-btn {
+    background-color: hsl(220, 98%, 61%);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Стиль для інпута при фокусі (опціонально) */
+#new-todo:focus {
     outline: none;
+}
+
+#add-todo-btn:hover {
+    background-color: hsl(220, 80%, 56%);
 }
 
 /* Стилі для списку завдань: */

@@ -5,9 +5,23 @@ const itemsLeft = document.getElementById("items-left");
 const clearCompletedBtn = document.getElementById("clear-completed");
 const filterBtns = document.querySelectorAll(".filter-btn");
 const themeToggleBtn = document.getElementById("theme-toggle");
+const addTodoBtn = document.getElementById("add-todo-btn"); 
 
 // Список завдань
 let todos = [];
+
+// Функція для збереження завдань у localStorage
+function saveTodosToLocalStorage() {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+// Функція для завантаження завдань із localStorage
+function loadTodosFromLocalStorage() {
+  const storedTodos = localStorage.getItem('todos');
+  if (storedTodos) {
+    todos = JSON.parse(storedTodos);
+  }
+}
 
 // Функція для відображення списку завдань
 function displayTodos() {
@@ -16,6 +30,8 @@ function displayTodos() {
   todos.forEach((todo, index) => {
     const todoItem = document.createElement("li");
     todoItem.classList.add("todo-item");
+    todoItem.setAttribute('draggable', true);
+
     if (todo.completed) {
       todoItem.classList.add("completed");
     }
@@ -30,15 +46,27 @@ function displayTodos() {
     todoList.appendChild(todoItem);
   });
 
+  enableDragAndDrop();
   updateItemsLeft();
 }
 
-// Функція для додавання нового завдання
+// Функція для додавання нового завдання через Enter або кнопку
 function addTodo(event) {
   if (event.key === "Enter" && todoInput.value.trim() !== "") {
     todos.push({ text: todoInput.value, completed: false });
     todoInput.value = "";
     displayTodos();
+    saveTodosToLocalStorage();
+  }
+}
+
+// Функція для додавання завдання за допомогою кнопки
+function addTodoFromButton() {
+  if (todoInput.value.trim() !== "") {
+    todos.push({ text: todoInput.value, completed: false });
+    todoInput.value = ""; 
+    displayTodos();
+    saveTodosToLocalStorage(); 
   }
 }
 
@@ -56,6 +84,7 @@ function toggleTodoCompletion(event) {
     );
     todos[index].completed = !todos[index].completed;
     displayTodos();
+    saveTodosToLocalStorage();
   }
 }
 
@@ -65,6 +94,7 @@ function deleteTodo(event) {
     const index = event.target.closest(".delete-btn").dataset.index;
     todos.splice(index, 1);
     displayTodos();
+    saveTodosToLocalStorage();
   }
 }
 
@@ -72,6 +102,7 @@ function deleteTodo(event) {
 function clearCompletedTodos() {
   todos = todos.filter((todo) => !todo.completed);
   displayTodos();
+  saveTodosToLocalStorage();
 }
 
 // Функція для фільтрації завдань (All, Active, Completed)
@@ -109,13 +140,57 @@ function toggleTheme() {
   }
 }
 
+// Функція для drag-and-drop
+function enableDragAndDrop() {
+  const todoItems = document.querySelectorAll('.todo-item');
+
+  let draggingItemIndex = null;
+
+  todoItems.forEach((item, index) => {
+    item.addEventListener('dragstart', (event) => {
+      draggingItemIndex = index;
+      item.classList.add('dragging');
+    });
+
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      draggingItemIndex = null;
+    });
+
+    item.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      const draggingItem = document.querySelector('.dragging');
+      const bounding = item.getBoundingClientRect();
+      const offset = event.clientY - bounding.top;
+
+      if (offset > bounding.height / 2) {
+        item.insertAdjacentElement('afterend', draggingItem);
+      } else {
+        item.insertAdjacentElement('beforebegin', draggingItem);
+      }
+    });
+
+    item.addEventListener('drop', (event) => {
+      const droppedOnIndex = index;
+      const draggedItem = todos[draggingItemIndex];
+      todos.splice(draggingItemIndex, 1);
+      todos.splice(droppedOnIndex, 0, draggedItem);
+
+      displayTodos();
+      saveTodosToLocalStorage();
+    });
+  });
+}
+
 // Обробники подій
-todoInput.addEventListener("keydown", addTodo);
+todoInput.addEventListener("keydown", addTodo); 
+addTodoBtn.addEventListener("click", addTodoFromButton); 
 todoList.addEventListener("click", toggleTodoCompletion);
 todoList.addEventListener("click", deleteTodo);
 clearCompletedBtn.addEventListener("click", clearCompletedTodos);
 filterBtns.forEach((btn) => btn.addEventListener("click", filterTodos));
 themeToggleBtn.addEventListener("click", toggleTheme);
 
-// Початковий виклик для відображення завдань
+// Завантажуємо завдання з localStorage
+loadTodosFromLocalStorage();
 displayTodos();

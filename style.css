@@ -20,7 +20,7 @@ body {
 
 body.light-theme {
     background-color: hsl(0, 0%, 98%);
-    color: hsl(235, 19%, 35%);
+    color: hsl(234, 39%, 85%);
     background-image: url('./images/bg-desktop-light.jpg');
     background-size: cover;
 }
@@ -80,15 +80,68 @@ header {
     width: 100%;
 }
 
+/* Стиль для textarea */
 #new-todo {
-    flex: 1;
+    width: 100%;
+    min-height: 40px;
     padding: 10px;
     font-size: 1rem;
-    border: none;
-    margin-right: 10px;
+    border-radius: 5px;
+    resize: none;
+    overflow: hidden;
     background-color: transparent;
     color: white;
+    border: none;
 }
+
+#new-todo:focus {
+    outline: none;
+}
+
+/* Стиль для кожного завдання */
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid hsl(233, 14%, 35%);
+}
+
+/* Стиль для тексту завдання */
+.todo-text {
+    flex: 1;
+    word-wrap: break-word;
+    word-break: break-word;
+    text-align: left;
+    margin-left: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    padding-right: 15px;
+}
+
+/* Стиль для чекбоксу */
+.check-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    border: 1px solid hsl(234, 11%, 52%);
+    border-radius: 50%;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.check-icon img {
+    width: 16px;
+    height: 16px;
+}
+
+.todo-item.completed .check-icon {
+    background-color: hsl(220, 98%, 61%);
+    border-color: hsl(220, 98%, 61%);
+}
+  
 
 /* Стилі кнопки "додати" */
 #add-todo-btn {
@@ -166,14 +219,25 @@ header {
 }
 
 .filter-btn.active {
-    color: hsl(220, 98%, 61%);
+    padding: 5px;
+    border-radius: 3px;
+    background-color: hsl(220, 98%, 61%);
 }
 
 #clear-completed {
-    background: none;
+    background: red;
+    padding: 5px;
+    border-radius: 3px;
     border: none;
     color: white;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#clear-completed:hover {
+    background: rgb(148, 25, 25);
+    padding: 5px;
+    border-radius: 3px;
 }
 
 /* Адаптивність (Медіа-запити): */

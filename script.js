@@ -1,4 +1,3 @@
-// Отримуємо елементи DOM
 const todoInput = document.getElementById("new-todo");
 const todoList = document.getElementById("todo-list");
 const itemsLeft = document.getElementById("items-left");
@@ -7,7 +6,6 @@ const filterBtns = document.querySelectorAll(".filter-btn");
 const themeToggleBtn = document.getElementById("theme-toggle");
 const addTodoBtn = document.getElementById("add-todo-btn"); 
 
-// Список завдань
 let todos = [];
 
 // Функція для збереження завдань у localStorage
@@ -21,6 +19,12 @@ function loadTodosFromLocalStorage() {
   if (storedTodos) {
     todos = JSON.parse(storedTodos);
   }
+}
+
+// Функція для автоматичної зміни висоти textarea
+function autoResizeTextarea() {
+  this.style.height = 'auto'; 
+  this.style.height = this.scrollHeight + 'px'; 
 }
 
 // Функція для відображення списку завдань
@@ -37,6 +41,7 @@ function displayTodos() {
     }
 
     todoItem.innerHTML = `
+      <span class="check-icon">${todo.completed ? '<img src="./images/icon-check.svg" alt="Check">' : ''}</span>
       <span class="todo-text">${todo.text}</span>
       <button class="delete-btn" data-index="${index}">
         <img src="./images/icon-cross.svg" alt="Delete">
@@ -55,6 +60,7 @@ function addTodo(event) {
   if (event.key === "Enter" && todoInput.value.trim() !== "") {
     todos.push({ text: todoInput.value, completed: false });
     todoInput.value = "";
+    todoInput.style.height = 'auto'; 
     displayTodos();
     saveTodosToLocalStorage();
   }
@@ -65,6 +71,7 @@ function addTodoFromButton() {
   if (todoInput.value.trim() !== "") {
     todos.push({ text: todoInput.value, completed: false });
     todoInput.value = ""; 
+    todoInput.style.height = 'auto'; 
     displayTodos();
     saveTodosToLocalStorage(); 
   }
@@ -131,12 +138,15 @@ function filterTodos(event) {
 
 // Функція для перемикання теми (денна/нічна)
 function toggleTheme() {
-  document.body.classList.toggle("light-theme");
+  const body = document.body;
   const themeIcon = themeToggleBtn.querySelector("img");
-  if (document.body.classList.contains("light-theme")) {
-    themeIcon.src = "./images/icon-moon.svg";
+
+  body.classList.toggle("light-theme");
+
+  if (body.classList.contains("light-theme")) {
+    themeIcon.src = "./images/icon-moon.svg"; 
   } else {
-    themeIcon.src = "./images/icon-sun.svg";
+    themeIcon.src = "./images/icon-sun.svg"; 
   }
 }
 
@@ -182,15 +192,16 @@ function enableDragAndDrop() {
   });
 }
 
-// Обробники подій
+
 todoInput.addEventListener("keydown", addTodo); 
 addTodoBtn.addEventListener("click", addTodoFromButton); 
+todoInput.addEventListener('input', autoResizeTextarea);
 todoList.addEventListener("click", toggleTodoCompletion);
 todoList.addEventListener("click", deleteTodo);
 clearCompletedBtn.addEventListener("click", clearCompletedTodos);
 filterBtns.forEach((btn) => btn.addEventListener("click", filterTodos));
 themeToggleBtn.addEventListener("click", toggleTheme);
 
-// Завантажуємо завдання з localStorage
+
 loadTodosFromLocalStorage();
 displayTodos();
